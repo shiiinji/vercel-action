@@ -32470,7 +32470,7 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"vercel-action","private":true,"license":"MIT","repository":{"type":"git","url":"https://github.com/amondnet/vercel-action"},"author":{"name":"Minsu Lee","email":"amond@amond.net","url":"https://amond.dev"},"version":"25.1.1","main":"index.js","scripts":{"lint":"eslint index.js","start":"node ./index.js","package":"ncc build index.js -o dist","test":"jest","format":"prettier --write index.js","format-check":"prettier --check index.js","all":"npm run format && npm run lint && npm run package && npm test"},"dependencies":{"@actions/core":"^1.10.0","@actions/exec":"^1.0.3","@actions/github":"^2.1.1","axios":"~0.18.1","common-tags":"^1.8.0","vercel":"25.1.0","@octokit/webhooks":"latest"},"devDependencies":{"@vercel/ncc":"^0.36.0","prettier":"^2.8.3","eslint":"^8.2.0","eslint-config-airbnb":"^19.0.4","eslint-config-prettier":"^8.6.0","eslint-plugin-import":"^2.27.5","eslint-plugin-jsx-a11y":"^6.7.1","eslint-plugin-prettier":"^4.2.1","eslint-plugin-react":"^7.32.1","eslint-plugin-react-hooks":"^4.6.0","jest":"^29.4.0"},"engines":{"node":"v16"},"keywords":["GitHub","Actions","Vercel","Zeit","Now"]}');
+module.exports = JSON.parse('{"name":"vercel-action","private":true,"license":"MIT","repository":{"type":"git","url":"https://github.com/amondnet/vercel-action"},"author":{"name":"Minsu Lee","email":"amond@amond.net","url":"https://amond.dev"},"version":"28.18.2","main":"index.js","scripts":{"lint":"eslint index.js","start":"node ./index.js","package":"ncc build index.js -o dist","test":"jest","format":"prettier --write index.js","format-check":"prettier --check index.js","all":"npm run format && npm run lint && npm run package && npm test"},"dependencies":{"@actions/core":"^1.10.0","@actions/exec":"^1.0.3","@actions/github":"^2.1.1","axios":"~0.18.1","common-tags":"^1.8.0","vercel":"28.18.2","@octokit/webhooks":"latest"},"devDependencies":{"@vercel/ncc":"^0.36.0","prettier":"^2.8.3","eslint":"^8.2.0","eslint-config-airbnb":"^19.0.4","eslint-config-prettier":"^8.6.0","eslint-plugin-import":"^2.27.5","eslint-plugin-jsx-a11y":"^6.7.1","eslint-plugin-prettier":"^4.2.1","eslint-plugin-react":"^7.32.1","eslint-plugin-react-hooks":"^4.6.0","jest":"^29.4.0"},"engines":{"node":"v18"},"keywords":["GitHub","Actions","Vercel","Zeit","Now"]}');
 
 /***/ })
 
@@ -32564,7 +32564,7 @@ function retry(fn, retries) {
         throw error;
       } else {
         core.info(`retrying: attempt ${retry + 1} / ${retries + 1}`);
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         return attempt(retry + 1);
       }
     }
@@ -32589,8 +32589,8 @@ const vercelBin = getVercelBin();
 const aliasDomains = core
   .getInput('alias-domains')
   .split('\n')
-  .filter(x => x !== '')
-  .map(s => {
+  .filter((x) => x !== '')
+  .map((s) => {
     let url = s;
     let branch = slugify(context.ref.replace('refs/heads/', ''));
     if (isPullRequestType(context.eventName)) {
@@ -32642,11 +32642,11 @@ async function vercelDeploy(ref, commit) {
   let myError = '';
   const options = {};
   options.listeners = {
-    stdout: data => {
+    stdout: (data) => {
       myOutput += data.toString();
       core.info(data.toString());
     },
-    stderr: data => {
+    stderr: (data) => {
       // eslint-disable-next-line no-unused-vars
       myError += data.toString();
       core.info(data.toString());
@@ -32697,12 +32697,12 @@ async function vercelInspect(deploymentUrl) {
   let myError = '';
   const options = {};
   options.listeners = {
-    stdout: data => {
+    stdout: (data) => {
       // eslint-disable-next-line no-unused-vars
       myOutput += data.toString();
       core.info(data.toString());
     },
-    stderr: data => {
+    stderr: (data) => {
       myError += data.toString();
       core.info(data.toString());
     },
@@ -32750,7 +32750,7 @@ async function findPreviousComment(text) {
   core.info('find comment');
   const { data: comments } = await findCommentsForEvent();
 
-  const vercelPreviewURLComment = comments.find(comment =>
+  const vercelPreviewURLComment = comments.find((comment) =>
     comment.body.startsWith(text),
   );
   if (vercelPreviewURLComment) {
@@ -32763,7 +32763,7 @@ async function findPreviousComment(text) {
 
 function joinDeploymentUrls(deploymentUrl, aliasDomains_) {
   if (aliasDomains_.length) {
-    const aliasUrls = aliasDomains_.map(domain => `https://${domain}`);
+    const aliasUrls = aliasDomains_.map((domain) => `https://${domain}`);
     return [deploymentUrl, ...aliasUrls].join('\n');
   }
   return deploymentUrl;
@@ -32875,7 +32875,7 @@ async function aliasDomainsToDeployment(deploymentUrl) {
     core.info('using scope');
     args.push('--scope', vercelScope);
   }
-  const promises = aliasDomains.map(domain =>
+  const promises = aliasDomains.map((domain) =>
     retry(
       () =>
         exec.exec('npx', [vercelBin, ...args, 'alias', deploymentUrl, domain]),
@@ -32897,9 +32897,7 @@ async function run() {
   let { sha } = context;
   await setEnv();
 
-  let commit = execSync('git log -1 --pretty=format:%B')
-    .toString()
-    .trim();
+  let commit = execSync('git log -1 --pretty=format:%B').toString().trim();
   if (github.context.eventName === 'push') {
     const pushPayload = github.context.payload;
     core.debug(`The head commit is: ${pushPayload.head_commit}`);
@@ -32965,7 +32963,7 @@ async function run() {
   }
 }
 
-run().catch(error => {
+run().catch((error) => {
   core.setFailed(error.message);
 });
 
