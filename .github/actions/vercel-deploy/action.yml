@@ -1,0 +1,44 @@
+name: 'Vercel Deploy'
+description: 'Deploy your project to Vercel'
+inputs:
+  github-token:
+    description: "github-token"
+    required: true
+  vercel-token:
+    description: "vercel-token"
+    required: true
+  vercel-org-id:
+    description: "vercel-org-id"
+    required: true
+  vercel-project-id:
+    description: "vercel-project-id"
+    required: true
+  vercel-args:
+    description: "vercel-args"
+    required: true
+  scope:
+    description: "scope"
+    required: true
+  working-directory:
+    description: "working-directory"
+    required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dist/index.js
+        id: vercel-action
+        with:
+          github-token: ${{ inputs.github-token }}
+          vercel-token: ${{ inputs.vercel-token }}
+          github-comment: false
+          vercel-org-id: ${{ inputs.vercel-org-id }}
+          vercel-project-id: ${{ inputs.vercel-project-id }}
+          vercel-args: ${{ inputs.vercel-args }}
+          scope: ${{ inputs.scope }}
+          working-directory: ${{ inputs.working-directory }}
+      - name: preview-url
+        run: |
+          echo ${{ steps.vercel-action.outputs.preview-url }}
