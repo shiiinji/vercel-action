@@ -210,7 +210,7 @@ async function findCommentsForEvent() {
   core.debug('find comments for event');
   if (context.eventName === 'push') {
     core.debug('event is "commit", use "listCommentsForCommit"');
-    return octokit.repos.listCommentsForCommit({
+    return octokit.repos.listCommitCommentsForRepo({
       ...context.repo,
       commit_sha: context.sha,
     });
