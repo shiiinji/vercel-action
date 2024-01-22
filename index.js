@@ -89,7 +89,7 @@ const aliasDomains = core
 
 let octokit;
 if (githubToken) {
-  octokit = new github.GitHub(githubToken);
+  octokit = github.getOctokit(githubToken);
 }
 
 async function setEnv() {
