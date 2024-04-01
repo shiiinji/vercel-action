@@ -20973,6 +20973,9 @@ function httpRedirectFetch (fetchParams, response) {
     // https://fetch.spec.whatwg.org/#cors-non-wildcard-request-header-name
     request.headersList.delete('authorization')
 
+    // https://fetch.spec.whatwg.org/#authentication-entries
+    request.headersList.delete('proxy-authorization', true)
+
     // "Cookie" and "Host" are forbidden request-headers, which undici doesn't implement.
     request.headersList.delete('cookie')
     request.headersList.delete('host')
@@ -33710,7 +33713,7 @@ module.exports = parseParams
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"vercel-action","private":true,"license":"MIT","repository":{"type":"git","url":"git+https://github.com/shiiinji/vercel-action.git"},"author":{"name":"Minsu Lee","email":"amond@amond.net","url":"https://amond.dev"},"version":"32.3.0","main":"index.js","scripts":{"lint":"eslint index.js","start":"node ./index.js","package":"ncc build index.js -o dist","test":"jest","format":"prettier --write index.js","format-check":"prettier --check index.js","all":"npm run format && npm run lint && npm run package && npm test"},"dependencies":{"@actions/core":"^1.10.1","@actions/exec":"^1.1.1","@actions/github":"^6.0.0","@octokit/webhooks":"latest","axios":"^1.6.5","common-tags":"^1.8.0","vercel":"32.3.0"},"devDependencies":{"@vercel/ncc":"^0.38.1","eslint":"^8.2.0","eslint-config-airbnb":"^19.0.4","eslint-config-prettier":"^8.6.0","eslint-plugin-import":"^2.27.5","eslint-plugin-jsx-a11y":"^6.7.1","eslint-plugin-prettier":"^4.2.1","eslint-plugin-react":"^7.32.1","eslint-plugin-react-hooks":"^4.6.0","jest":"^29.4.0","prettier":"^2.8.3"},"engines":{"node":"v18"},"keywords":["GitHub","Actions","Vercel","Zeit","Now"]}');
+module.exports = JSON.parse('{"name":"vercel-action","private":true,"license":"MIT","repository":{"type":"git","url":"git+https://github.com/shiiinji/vercel-action.git"},"author":{"name":"Minsu Lee","email":"amond@amond.net","url":"https://amond.dev"},"version":"33.6.2","main":"index.js","scripts":{"lint":"eslint index.js","start":"node ./index.js","package":"ncc build index.js -o dist","test":"jest","format":"prettier --write index.js","format-check":"prettier --check index.js","all":"npm run format && npm run lint && npm run package && npm test"},"dependencies":{"@actions/core":"^1.10.1","@actions/exec":"^1.1.1","@actions/github":"^6.0.0","@octokit/webhooks":"latest","axios":"^1.6.5","common-tags":"^1.8.0","vercel":"^32.3.0"},"devDependencies":{"@vercel/ncc":"^0.38.1","eslint":"^8.2.0","eslint-config-airbnb":"^19.0.4","eslint-config-prettier":"^8.6.0","eslint-plugin-import":"^2.27.5","eslint-plugin-jsx-a11y":"^6.7.1","eslint-plugin-prettier":"^4.2.1","eslint-plugin-react":"^7.32.1","eslint-plugin-react-hooks":"^4.6.0","jest":"^29.4.0","prettier":"^2.8.3"},"engines":{"node":"v18"},"keywords":["GitHub","Actions","Vercel","Zeit","Now"]}');
 
 /***/ })
 
@@ -33967,7 +33970,7 @@ async function findCommentsForEvent() {
   core.debug('find comments for event');
   if (context.eventName === 'push') {
     core.debug('event is "commit", use "listCommentsForCommit"');
-    return octokit.repos.listCommentsForCommit({
+    return octokit.repos.listCommitCommentsForRepo({
       ...context.repo,
       commit_sha: context.sha,
     });

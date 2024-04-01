@@ -11,7 +11,7 @@
     "email": "amond@amond.net",
     "url": "https://amond.dev"
   },
-  "version": "32.3.0",
+  "version": "33.6.2",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
@@ -29,7 +29,7 @@
     "@octokit/webhooks": "latest",
     "axios": "^1.6.5",
     "common-tags": "^1.8.0",
-    "vercel": "32.3.0"
+    "vercel": "^32.3.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.1",
